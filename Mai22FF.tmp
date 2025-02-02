@@ -1,0 +1,53 @@
+[gd_scene load_steps=12 format=3 uid="uid://qhdgiu87volw"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_phdlu"]
+[ext_resource type="Script" path="res://shark.gd" id="2_7r3xx"]
+[ext_resource type="Script" path="res://camera_3d_2.gd" id="4_31oa1"]
+[ext_resource type="Shader" path="res://Mainscene.gdshader" id="4_p5htu"]
+[ext_resource type="Script" path="res://Shark_mesh.gd" id="5_kmaq3"]
+[ext_resource type="Script" path="res://water_plane.gd" id="6_38608"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_71ijs"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ruyx0"]
+
+[sub_resource type="PointMesh" id="PointMesh_d2sfa"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mgxa8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ocrpr"]
+render_priority = 0
+shader = ExtResource("4_p5htu")
+shader_parameter/water_color = Vector4(0, 0.5, 1, 1)
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_height = 0.1
+shader_parameter/wave_frequency = 1.0
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_phdlu")
+
+[node name="Shark" type="CharacterBody3D" parent="."]
+script = ExtResource("2_7r3xx")
+
+[node name="Sharkskin" type="MeshInstance3D" parent="Shark"]
+mesh = SubResource("PrismMesh_71ijs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shark"]
+shape = SubResource("ConvexPolygonShape3D_ruyx0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shark"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.00798, 0, 0)
+mesh = SubResource("PointMesh_d2sfa")
+skeleton = NodePath("../..")
+script = ExtResource("5_kmaq3")
+
+[node name="Camera3D2" type="Camera3D" parent="Shark"]
+script = ExtResource("4_31oa1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.326624, 0.945154, 3.77964e-09, -0.0846761, 0.0292621, 0.995979, 0.941354, -0.325311, 0.0895897, 0.0927119, 11.2455, 0)
+
+[node name="WaterPlane" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_mgxa8")
+surface_material_override/0 = SubResource("ShaderMaterial_ocrpr")
+script = ExtResource("6_38608")

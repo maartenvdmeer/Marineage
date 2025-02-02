@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://qhdgiu87volw"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_phdlu"]
+[ext_resource type="Script" path="res://Whale.gd" id="4_86cjv"]
+[ext_resource type="Shader" path="res://Mainscene.gdshader" id="4_p5htu"]
+[ext_resource type="Script" path="res://Whale_mesh.gd" id="5_5p5jl"]
+[ext_resource type="Script" path="res://Camera_3d.gd" id="5_spbkg"]
+[ext_resource type="Script" path="res://water_plane.gd" id="6_38608"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mgxa8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ocrpr"]
+render_priority = 0
+shader = ExtResource("4_p5htu")
+shader_parameter/water_color = Vector4(0, 0.5, 1, 1)
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_height = 0.1
+shader_parameter/wave_frequency = 1.0
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_phdlu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.326624, 0.945154, 3.77964e-09, -0.0846761, 0.0292621, 0.995979, 0.941354, -0.325311, 0.0895897, 0.0927119, 11.2455, 0)
+
+[node name="WaterPlane" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.048536, -0.998821, 0, 0.998821, -0.048536, 0, 0, -1.80065)
+mesh = SubResource("PlaneMesh_mgxa8")
+surface_material_override/0 = SubResource("ShaderMaterial_ocrpr")
+script = ExtResource("6_38608")
+
+[node name="Whale" type="CharacterBody3D" parent="."]
+script = ExtResource("4_86cjv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Whale"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Whale"]
+script = ExtResource("5_5p5jl")
+
+[node name="Camera3D" type="Camera3D" parent="Whale"]
+transform = Transform3D(1, 0, 0, 0, 0.999434, 0.0336436, 0, -0.0336436, 0.999434, 0, 0, 1.96531)
+script = ExtResource("5_spbkg")
